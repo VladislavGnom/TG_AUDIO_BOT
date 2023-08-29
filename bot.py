@@ -1,11 +1,13 @@
 import moviepy.editor
-from config import tg_bot_token
+from config import Config, load_config
 from aiogram import Bot, types
 from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
 
 
-bot: Bot = Bot(token=tg_bot_token)
+config: Config = load_config()
+
+bot: Bot = Bot(token=config.tg_bot.token, parse_mode='HTML')
 dp: Dispatcher = Dispatcher(bot)
 
 
@@ -16,7 +18,6 @@ async def process_start_command(message: types.Message):
 
 @dp.message_handler(content_types='video')
 async def get_audio(message: types.Message, file_name="video.mp4"):
-    print('Complete one!')
     try:
         chat_id = message.chat.id
         file_id = message.video.file_id  # Get file id
